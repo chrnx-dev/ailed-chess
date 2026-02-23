@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: AILED — Psyche & Personality System for Chess Engines
+message: >-
+  If you use this software in research, please cite it using
+  the metadata from this file.
+type: software
+authors:
+  - family-names: "[Author Last Name]"
+    given-names: "[Author First Name]"
+    affiliation: "[Your Institution]"
+repository-code: https://github.com/chrnx-dev/ailed-chess
+url: https://github.com/chrnx-dev/ailed-chess
+abstract: >-
+  A continuous emotional state (psyche ∈ [−100, +100]) and audio-inspired
+  signal chain that reshape any chess engine's move probability distribution
+  without search or model retraining. Six built-in personalities. Pure Python,
+  architecture-agnostic.
+keywords:
+  - chess
+  - artificial-intelligence
+  - personality
+  - emotional-state
+  - psychology
+  - game-playing
+license: Apache-2.0
+version: 1.0.0
+date-released: "2026-02-22"
