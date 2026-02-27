@@ -5,13 +5,14 @@ message: >-
   the metadata from this file.
 type: software
 authors:
-  - family-names: "[Author Last Name]"
-    given-names: "[Author First Name]"
-    affiliation: "[Your Institution]"
+  - family-names: "Resendez Prado"
+    given-names: "Diego Armando"
+    affiliation: "Independent Researcher"
+    orcid: "https://orcid.org/0000-0001-8328-8991"
 repository-code: https://github.com/chrnx-dev/ailed-chess
 url: https://github.com/chrnx-dev/ailed-chess
 abstract: >-
-  A continuous emotional state (psyche ∈ [−100, +100]) and audio-inspired
+  A continuous emotional state (psyche in [-100, +100]) and audio-inspired
   signal chain that reshape any chess engine's move probability distribution
   without search or model retraining. Six built-in personalities. Pure Python,
   architecture-agnostic.
@@ -23,5 +24,5 @@ keywords:
   - psychology
   - game-playing
 license: Apache-2.0
-version: 1.0.0
-date-released: "2026-02-22"
+version: 0.1.0
+date-released: "2026-02-27"

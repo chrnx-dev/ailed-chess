@@ -7,7 +7,7 @@ A continuous *psyche* score (ψ ∈ [−100, +100]) tracks position quality move
 Works as a drop-in layer on top of any move predictor that outputs logits or probabilities: Maia2, Stockfish NNUE policy heads, or your own transformer.
 
 > This module is a partial release accompanying the research paper:
-> **"Personality and Psyche: Continuous Affective Modulation for Human-Like Chess Engines"**
+> **"Ailed: A Psyche-Driven Chess Engine with Dynamic Emotional Modulation"**
 
 ---
 
@@ -100,6 +100,38 @@ cd ailed-chess
 pip install -e .
 ```
 
+## Reproduce Core Checks
+
+Run the package tests exactly as used for release readiness:
+
+```bash
+pytest -q
+```
+
+Minimal sanity check of psyche + selector behavior:
+
+```bash
+python - <<'PY'
+import chess
+import torch
+from ailed.psyche import PsycheCalculator
+from ailed.uci.move_selector import MoveSelector
+
+board = chess.Board()
+board.push_san("e4")
+
+calc = PsycheCalculator()
+psi = calc.update_psyche(0.0, board)
+
+selector = MoveSelector()
+legal = list(board.legal_moves)
+logits = torch.randn(len(legal))
+move = selector.select_move(legal_moves=legal, move_logits=logits, base_confidence=0.8, psyche=psi)
+
+print(f"psyche={psi:.2f}, selected={move.uci()}")
+PY
+```
+
 ---
 
 ## Architecture Agnosticism
@@ -131,12 +163,16 @@ Full AILED system (released with paper) includes:
 
 ## Citation
 
+Please cite both:
+- the software release (preferred via GitHub citation tools / `CITATION.cff`)
+- the arXiv paper once public
+
 ```bibtex
 @misc{ailed2026,
-  title={Personality and Psyche: Continuous Affective Modulation for Human-Like Chess Engines},
-  author={[Author]},
+  title={Ailed: A Psyche-Driven Chess Engine with Dynamic Emotional Modulation},
+  author={Resendez Prado, Diego Armando},
   year={2026},
-  eprint={XXXX.XXXXX},
+  eprint={TBD},
   archivePrefix={arXiv},
   primaryClass={cs.AI}
 }
