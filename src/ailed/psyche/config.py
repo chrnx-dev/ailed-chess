@@ -61,6 +61,14 @@ class PsycheConfig(BaseModel):
         ge=1,
         description="Fullmove number threshold for opening phase"
     )
+    opening_material_loss_threshold: int = Field(
+        default=6,
+        ge=0,
+        description=(
+            "Non-pawn/non-king material points lost from starting 62 that exits opening phase early. "
+            "Prevents dampened reactivity persisting through rapid early exchanges."
+        )
+    )
     endgame_material_threshold: int = Field(
         default=13,
         ge=0,

@@ -23,6 +23,7 @@ class TestPsycheConfig:
         assert config.check_penalty == -50
         assert config.decay_rate == 0.20
         assert config.opening_move_limit == 15
+        assert config.opening_material_loss_threshold == 6
         assert config.endgame_material_threshold == 13
         assert config.opening_reactivity_factor == 0.15
         assert config.endgame_reactivity_factor == 0.1
@@ -413,11 +414,17 @@ class TestGamePhaseDetection:
         board = chess.Board("r2qk3/8/8/8/8/8/8/R2QK3 w - - 0 20")
         assert calculator._detect_game_phase(board) == "middlegame"
 
-    def test_opening_overrides_endgame_material(self, calculator):
-        """Low material in early moves is still opening (opening checked first)."""
-        # Few pieces but move 5 — opening takes priority
+    def test_endgame_takes_priority_over_move_limit(self, calculator):
+        """Endgame material threshold takes priority even within move limit.
+
+        If the position has endgame-level material (e.g. K+R only) the phase
+        is 'endgame' regardless of the fullmove number.  The old design returned
+        'opening' here but the material-loss threshold logic correctly identifies
+        that 57 material points have been lost (62→5), which far exceeds the
+        default threshold of 6, so endgame wins.
+        """
         board = chess.Board("4k3/8/8/8/8/8/8/4K2R w - - 0 5")
-        assert calculator._detect_game_phase(board) == "opening"
+        assert calculator._detect_game_phase(board) == "endgame"
 
     def test_custom_opening_move_limit(self):
         """Custom opening_move_limit is respected."""
@@ -426,6 +433,71 @@ class TestGamePhaseDetection:
         board = chess.Board()
         board.fullmove_number = 11
         assert calc._detect_game_phase(board) == "middlegame"
+
+
+class TestOpeningMaterialLossThreshold:
+    """Test early exit from opening phase when material is exchanged."""
+
+    def test_no_material_lost_stays_opening(self):
+        """Starting position within move limit is opening."""
+        calc = PsycheCalculator()
+        board = chess.Board()
+        board.fullmove_number = 10
+        assert calc._detect_game_phase(board) == "opening"
+
+    def test_small_loss_stays_opening(self):
+        """One knight captured (loss=3 < threshold=6) stays opening."""
+        calc = PsycheCalculator()
+        board = chess.Board()
+        board.fullmove_number = 8
+        board.remove_piece_at(chess.G1)  # remove white knight (3 pts)
+        assert calc._detect_game_phase(board) == "opening"
+
+    def test_threshold_loss_exits_opening(self):
+        """Loss equal to threshold (6 < 6 is False) exits to middlegame."""
+        calc = PsycheCalculator()
+        board = chess.Board()
+        board.fullmove_number = 8
+        board.remove_piece_at(chess.G1)  # white knight
+        board.remove_piece_at(chess.G8)  # black knight — total loss = 6
+        assert calc._detect_game_phase(board) == "middlegame"
+
+    def test_queen_loss_exits_opening(self):
+        """Losing a queen (9 > threshold=6) exits to middlegame early."""
+        calc = PsycheCalculator()
+        board = chess.Board()
+        board.fullmove_number = 5
+        board.remove_piece_at(chess.D1)  # remove white queen (9 pts)
+        assert calc._detect_game_phase(board) == "middlegame"
+
+    def test_pawns_not_counted_for_threshold(self):
+        """Removing pawns does not trigger the material loss exit."""
+        calc = PsycheCalculator()
+        board = chess.Board()
+        board.fullmove_number = 5
+        for sq in [chess.E2, chess.D2, chess.E7, chess.D7]:
+            board.remove_piece_at(sq)
+        # Nonpawn material unchanged at 62 — still opening
+        assert calc._detect_game_phase(board) == "opening"
+
+    def test_custom_threshold_zero_always_exits(self):
+        """With threshold=0, any material loss exits opening immediately."""
+        config = PsycheConfig(opening_material_loss_threshold=0)
+        calc = PsycheCalculator(config)
+        board = chess.Board()
+        board.fullmove_number = 5
+        board.remove_piece_at(chess.G1)  # loss=3, 3 < 0 is False → middlegame
+        assert calc._detect_game_phase(board) == "middlegame"
+
+    def test_new_field_validation_accepts_zero(self):
+        """opening_material_loss_threshold=0 is valid."""
+        config = PsycheConfig(opening_material_loss_threshold=0)
+        assert config.opening_material_loss_threshold == 0
+
+    def test_new_field_validation_rejects_negative(self):
+        """opening_material_loss_threshold must be non-negative."""
+        with pytest.raises(Exception):
+            PsycheConfig(opening_material_loss_threshold=-1)
 
 
 class TestSacrificeDetection:
