@@ -183,6 +183,19 @@ Full AILED system (released with paper) includes:
 
 ---
 
+## Community
+
+| | |
+|---|---|
+| [Contributing](CONTRIBUTING.md) | Bug fixes, new psyche factors, EQ personalities, docs |
+| [Code of Conduct](CODE_OF_CONDUCT.md) | Contributor Covenant v2.1 |
+| [Security](SECURITY.md) | Private vulnerability reporting via GitHub advisories |
+| [Issue templates](.github/ISSUE_TEMPLATE/) | Bug report · Feature request · Docs improvement |
+
+**AI-generated contributions are welcome.** Contributors are responsible for understanding and testing their code. Changes to critical paths (psyche math, phase detection, EQ signal chain) may require human validation before merge — see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+---
+
 ## Citation
 
 Please cite both:
