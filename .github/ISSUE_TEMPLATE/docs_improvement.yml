@@ -1,0 +1,28 @@
+name: Documentation Improvement
+description: Report unclear, incomplete, or incorrect documentation
+labels: ["documentation"]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: File and section where the issue is (e.g. README.md > Game Phase Detection)
+      placeholder: e.g. README.md — Installation section
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What Is Unclear or Incorrect
+      placeholder: Describe what confused you or what is wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Fix
+      description: Optional — paste improved wording or a corrected example
+    validations:
+      required: false

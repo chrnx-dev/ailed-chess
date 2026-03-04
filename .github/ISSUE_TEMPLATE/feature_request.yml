@@ -1,0 +1,43 @@
+name: Feature Request
+description: Propose a new psyche factor, EQ personality, integration example, or other enhancement
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What limitation or missing behavior prompted this request?
+      placeholder: e.g. "The psyche system doesn't account for king tropism, so engine behavior near the endgame transition feels uniform..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe what you'd like to see added or changed
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you thought about and why you ruled them out
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Psyche calculator (new factor)
+        - Game phase detection
+        - EQ signal chain / personality
+        - Move selector
+        - Configuration / PsycheConfig
+        - Documentation / examples
+        - Other
+    validations:
+      required: true

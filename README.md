@@ -27,6 +27,28 @@ The `PsycheCalculator` evaluates the board position after every move across five
 
 These are combined, tanh-compressed to [−100, +100], and blended into the running psyche state with configurable reactivity, phase-awareness (opening/middlegame/endgame), sacrifice dampening, and daily decay toward neutral.
 
+#### Game Phase Detection
+
+Phase is detected per move and controls reactivity scaling (opening = dampened, middlegame = baseline, endgame = strongly dampened / freeze-biased by default, all configurable via `PsycheConfig`):
+
+| Phase | Condition |
+|---|---|
+| Opening | fullmove ≤ 15 **and** non-pawn/non-king material loss < 6 pts |
+| Endgame | total non-pawn/non-king material on board ≤ 13 pts |
+| Middlegame | everything else |
+
+Endgame takes priority. The opening threshold prevents damped reactivity from masking rapid early collapses — gambits, sacrifices, or early trades that lose 6+ points of material (≈ two minor pieces) exit opening phase immediately, even before move 15. Both thresholds are configurable via `PsycheConfig`:
+
+```python
+from ailed.psyche.config import PsycheConfig
+
+config = PsycheConfig(
+    opening_move_limit=15,               # fullmove limit for opening phase
+    opening_material_loss_threshold=6,   # points lost to exit opening early (default: 6)
+    endgame_material_threshold=13,       # total material to enter endgame
+)
+```
+
 ```python
 from ailed.psyche import PsycheCalculator
 import chess
@@ -158,6 +180,19 @@ Full AILED system (released with paper) includes:
 - Web dashboard
 - Nightly study loop
 - Terminal UI
+
+---
+
+## Community
+
+| | |
+|---|---|
+| [Contributing](CONTRIBUTING.md) | Bug fixes, new psyche factors, EQ personalities, docs |
+| [Code of Conduct](CODE_OF_CONDUCT.md) | Contributor Covenant v2.1 |
+| [Security](SECURITY.md) | Private vulnerability reporting via GitHub advisories |
+| [Issue templates](.github/ISSUE_TEMPLATE/) | Bug report · Feature request · Docs improvement |
+
+**AI-generated contributions are welcome.** Contributors are responsible for understanding and testing their code. Changes to critical paths (psyche math, phase detection, EQ signal chain) may require human validation before merge — see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 

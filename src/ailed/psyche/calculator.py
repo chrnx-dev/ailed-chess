@@ -214,10 +214,16 @@ class PsycheCalculator:
 
         return pieces_attacked
 
+    # Starting non-pawn, non-king material for both sides combined
+    # 4N(3) + 4B(3) + 4R(5) + 2Q(9) = 12 + 12 + 20 + 18 = 62
+    STARTING_NONPAWN_MATERIAL = 62
+
     def _detect_game_phase(self, board: chess.Board) -> str:
         """Detect current game phase from board state.
 
-        Opening is checked first — early rapid exchanges still "feel" like opening.
+        Opening ends when EITHER the move limit is exceeded OR significant
+        non-pawn material has been exchanged. This prevents damped opening
+        reactivity from masking rapid early collapses.
 
         Args:
             board: Current board position.
@@ -225,9 +231,6 @@ class PsycheCalculator:
         Returns:
             One of "opening", "middlegame", or "endgame".
         """
-        if board.fullmove_number <= self.config.opening_move_limit:
-            return "opening"
-
         # Count total non-pawn, non-king material for both sides
         total_material = 0
         for square in chess.SQUARES:
@@ -237,6 +240,13 @@ class PsycheCalculator:
 
         if total_material <= self.config.endgame_material_threshold:
             return "endgame"
+
+        material_lost = max(0, self.STARTING_NONPAWN_MATERIAL - total_material)
+        if (
+            board.fullmove_number <= self.config.opening_move_limit
+            and material_lost < self.config.opening_material_loss_threshold
+        ):
+            return "opening"
 
         return "middlegame"
 
