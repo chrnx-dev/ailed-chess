@@ -65,8 +65,9 @@ class PsycheConfig(BaseModel):
         default=6,
         ge=0,
         description=(
-            "Non-pawn/non-king material points lost from starting 62 that exits opening phase early. "
-            "Prevents dampened reactivity persisting through rapid early exchanges."
+            "Threshold of non-pawn/non-king material points lost from the starting 62 at which the "
+            "opening phase ends early. Prevents dampened reactivity persisting through rapid "
+            "early exchanges."
         )
     )
     endgame_material_threshold: int = Field(

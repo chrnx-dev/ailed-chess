@@ -29,7 +29,7 @@ These are combined, tanh-compressed to [−100, +100], and blended into the runn
 
 #### Game Phase Detection
 
-Phase is detected per move and controls reactivity scaling (opening = dampened, endgame = heightened):
+Phase is detected per move and controls reactivity scaling (opening = dampened, middlegame = baseline, endgame = strongly dampened / freeze-biased by default, all configurable via `PsycheConfig`):
 
 | Phase | Condition |
 |---|---|

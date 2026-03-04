@@ -481,12 +481,19 @@ class TestOpeningMaterialLossThreshold:
         assert calc._detect_game_phase(board) == "opening"
 
     def test_custom_threshold_zero_always_exits(self):
-        """With threshold=0, any material loss exits opening immediately."""
+        """With threshold=0, opening is never used, even with no material loss."""
         config = PsycheConfig(opening_material_loss_threshold=0)
         calc = PsycheCalculator(config)
+
+        # Even with no material loss, 0 < 0 is False → not opening
         board = chess.Board()
         board.fullmove_number = 5
-        board.remove_piece_at(chess.G1)  # loss=3, 3 < 0 is False → middlegame
+        assert calc._detect_game_phase(board) == "middlegame"
+
+        # With material loss, 3 < 0 is also False → still not opening
+        board = chess.Board()
+        board.fullmove_number = 5
+        board.remove_piece_at(chess.G1)  # remove white knight (3 pts)
         assert calc._detect_game_phase(board) == "middlegame"
 
     def test_new_field_validation_accepts_zero(self):

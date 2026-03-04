@@ -241,7 +241,7 @@ class PsycheCalculator:
         if total_material <= self.config.endgame_material_threshold:
             return "endgame"
 
-        material_lost = self.STARTING_NONPAWN_MATERIAL - total_material
+        material_lost = max(0, self.STARTING_NONPAWN_MATERIAL - total_material)
         if (
             board.fullmove_number <= self.config.opening_move_limit
             and material_lost < self.config.opening_material_loss_threshold
