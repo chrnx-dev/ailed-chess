@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ailed.psyche.analysis import compute_side_normalized_psyche
+from ailed_chess.psyche.analysis import compute_side_normalized_psyche
 
 
 def test_compute_side_normalized_psyche_reports_expected_deltas() -> None:

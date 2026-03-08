@@ -2,8 +2,8 @@
 
 import pytest
 import chess
-from ailed.psyche.calculator import PsycheCalculator
-from ailed.psyche.config import PsycheConfig
+from ailed_chess.psyche.calculator import PsycheCalculator
+from ailed_chess.psyche.config import PsycheConfig
 
 
 class TestPsycheConfig:

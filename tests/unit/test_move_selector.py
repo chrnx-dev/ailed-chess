@@ -3,9 +3,9 @@
 import pytest
 import torch
 import chess
-from ailed.uci.move_selector import MoveSelector
-from ailed.uci.selection_config import SelectionConfig
-from ailed.uci.eq_curve import EQCurve, PRESETS, band_ranges, _lerp_anchors
+from ailed_chess.uci.move_selector import MoveSelector
+from ailed_chess.uci.selection_config import SelectionConfig
+from ailed_chess.uci.eq_curve import EQCurve, PRESETS, band_ranges, _lerp_anchors
 
 
 # -- _lerp_anchors tests -----------------------------------------------------

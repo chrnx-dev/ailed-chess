@@ -16,8 +16,8 @@ import torch
 import chess
 from typing import List, Optional
 
-from ailed.uci.selection_config import SelectionConfig
-from ailed.uci.eq_curve import EQCurve, PRESETS, band_ranges
+from ailed_chess.uci.selection_config import SelectionConfig
+from ailed_chess.uci.eq_curve import EQCurve, PRESETS, band_ranges
 
 
 class MoveSelector:

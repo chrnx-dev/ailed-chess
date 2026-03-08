@@ -10,7 +10,7 @@ import math
 import chess
 from typing import Optional
 
-from ailed.psyche.config import PsycheConfig
+from ailed_chess.psyche.config import PsycheConfig
 
 
 class PsycheCalculator:
