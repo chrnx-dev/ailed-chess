@@ -40,7 +40,7 @@ Phase is detected per move and controls reactivity scaling (opening = dampened, 
 Endgame takes priority. The opening threshold prevents damped reactivity from masking rapid early collapses — gambits, sacrifices, or early trades that lose 6+ points of material (≈ two minor pieces) exit opening phase immediately, even before move 15. Both thresholds are configurable via `PsycheConfig`:
 
 ```python
-from ailed.psyche.config import PsycheConfig
+from ailed_chess.psyche.config import PsycheConfig
 
 config = PsycheConfig(
     opening_move_limit=15,               # fullmove limit for opening phase
@@ -50,7 +50,7 @@ config = PsycheConfig(
 ```
 
 ```python
-from ailed.psyche import PsycheCalculator
+from ailed_chess.psyche import PsycheCalculator
 import chess
 
 calc = PsycheCalculator()          # default config
@@ -79,8 +79,8 @@ Softmax → Noise gate → Dynamics → Sort + EQ bands → Saturation → Renor
 All five parameters interpolate across N psyche anchors. At ψ = −70 (stressed) behavior differs dramatically from ψ = +70 (overconfident).
 
 ```python
-from ailed.uci.move_selector import MoveSelector
-from ailed.uci.eq_curve import PRESETS
+from ailed_chess.uci.move_selector import MoveSelector
+from ailed_chess.uci.eq_curve import PRESETS
 import torch, chess
 
 selector = MoveSelector(curve=PRESETS["human"])
@@ -136,8 +136,8 @@ Minimal sanity check of psyche + selector behavior:
 python - <<'PY'
 import chess
 import torch
-from ailed.psyche import PsycheCalculator
-from ailed.uci.move_selector import MoveSelector
+from ailed_chess.psyche import PsycheCalculator
+from ailed_chess.uci.move_selector import MoveSelector
 
 board = chess.Board()
 board.push_san("e4")
